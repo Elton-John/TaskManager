@@ -16,7 +16,9 @@ import java.util.Scanner;
 public class TaskManager {
 
     public static void main(String[] args) {
-        String[][] taskTabFromFile = getStringMultiArrayFromFile("task.csv");
+        start();
+
+        String[][] taskTabFromFile = getStringMultiArrayFromFile();
 
         showOptions();
 
@@ -26,19 +28,16 @@ public class TaskManager {
         while (true) {
             switch (input) {
                 case "add":
-                    System.out.println("dodaję");
                     taskTabFromFile = add(scanner, taskTabFromFile);
                     showOptions();
                     input = scanner.nextLine();
                     break;
                 case "remove":
-                    System.out.println("usuwam");
                     taskTabFromFile = removeTask(scanner, taskTabFromFile);
                     showOptions();
                     input = scanner.nextLine();
                     break;
                 case "list":
-                    System.out.println("pokazuję");
                     list(taskTabFromFile);
                     showOptions();
                     input = scanner.nextLine();
@@ -51,9 +50,8 @@ public class TaskManager {
 
 
             if (input.equals("exit")) {
-                System.out.println("zapisuję do pliku");
                 try {
-                    writeFromTaskTabToFile(taskTabFromFile, "task.csv");
+                    writeFromTaskTabToFile(taskTabFromFile);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -64,12 +62,23 @@ public class TaskManager {
         }
     }
 
-    private static void writeFromTaskTabToFile(String[][] taskTabFromFile, String fileName) throws FileNotFoundException {
-        try (PrintWriter printWriter = new PrintWriter(fileName)) {
-            for (int i = 0; i < taskTabFromFile.length; i++) {
-                StringBuilder builder = new StringBuilder(taskTabFromFile[i][0]);
-                for (int j = 1; j < taskTabFromFile[i].length; j++) {
-                    builder.append(",").append(taskTabFromFile[i][j]);
+    private static void start() {
+        Path path = Paths.get("task.csv");
+        if (!Files.exists(path)) {
+            try {
+                Files.createFile(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void writeFromTaskTabToFile(String[][] taskTabFromFile) throws FileNotFoundException {
+        try (PrintWriter printWriter = new PrintWriter("task.csv")) {
+            for (String[] strings : taskTabFromFile) {
+                StringBuilder builder = new StringBuilder(strings[0]);
+                for (int j = 1; j < strings.length; j++) {
+                    builder.append(",").append(strings[j]);
                 }
                 printWriter.println(builder);
             }
@@ -82,9 +91,9 @@ public class TaskManager {
         for (int i = 0; i < taskTabFromFile.length; i++) {
             System.out.print(i + "  ");
             for (int j = 0; j < taskTabFromFile[i].length; j++) {
-                System.out.print(taskTabFromFile[i][j]);
+                System.out.print(taskTabFromFile[i][j] + " ");
             }
-            System.out.println("");
+            System.out.println();
         }
     }
 
@@ -118,13 +127,13 @@ public class TaskManager {
         newTask.append(scanner.nextLine()).append(",");
 
         System.out.println(ConsoleColors.GREEN_BOLD + "Please add task due data:");
-        String data = "";
+        String data;
         while (true) {
             data = scanner.nextLine();
             if (GenericValidator.isDate(data, "dd-MM-yyyy", true)) {
                 break;
             } else {
-                System.out.println("Please enter Date in this format DD-MM-YYYY");
+                System.out.println("Please use this format DD-MM-YYYY");
             }
         }
         newTask.append(data).append(",");
@@ -136,7 +145,7 @@ public class TaskManager {
         taskTabFromFile = Arrays.copyOf(taskTabFromFile, taskTabFromFile.length + 1);
         String newTaskForAdd = String.valueOf(newTask);
         taskTabFromFile[taskTabFromFile.length - 1] = newTaskForAdd.split(",");
-        System.out.println(Arrays.deepToString(taskTabFromFile));
+
 
         return taskTabFromFile;
     }
@@ -151,8 +160,8 @@ public class TaskManager {
         }
     }
 
-    private static String[][] getStringMultiArrayFromFile(String fileName) {
-        Path taskFile = Paths.get(fileName);
+    private static String[][] getStringMultiArrayFromFile() {
+        Path taskFile = Paths.get("task.csv");
 
         String[][] taskTabFromFile = new String[0][];
         int i = 0;
@@ -168,7 +177,6 @@ public class TaskManager {
             e.printStackTrace();
         }
 
-        System.out.println(Arrays.deepToString(taskTabFromFile));
         return taskTabFromFile;
     }
 }
