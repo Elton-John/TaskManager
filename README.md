@@ -1,6 +1,6 @@
 # TaskManager
-:boom: My first projekt in **JAVA**. Add and remove information using **CSV** file.
-## Autor and License
+:boom: My first project in **JAVA**. Add and remove information using **CSV** file.
+## Author and License
 **OLGA KRYUKOVA**   
 MIT license (It lets people do almost anything they want with your project, like making and distributing closed source versions)
 
