@@ -4,7 +4,7 @@
 **OLGA KRYUKOVA**   
 MIT license (It lets people do almost anything they want with your project, like making and distributing closed source versions)
 
-# How it works?
+# This is how it works
 It's my first bigger console program, which can comunicate with user.
 
 The program offers the user 4 options:
