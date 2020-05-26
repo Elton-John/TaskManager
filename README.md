@@ -2,7 +2,7 @@
 :boom: My first projekt in **JAVA**. Add and remove information using **CSV** file.
 ## Autor and License
 **OLGA KRYUKOVA**   
-MIT license (It lets people do almost anything they want with your project, like making and distributing closed source versions)
+MIT license (It lets people do almost anything they want with the project, like making and distributing closed source versions)
 
 # This is how it works
 It's my first bigger console program, which can communicate with user.
