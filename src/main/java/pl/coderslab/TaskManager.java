@@ -42,22 +42,20 @@ public class TaskManager {
                     showOptions();
                     input = scanner.nextLine();
                     break;
+                case "exit":
+                    try {
+                        writeFromTaskTabToFile(taskTabFromFile);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(ConsoleColors.CYAN_BOLD + "All changes saved");
+                    System.out.println(ConsoleColors.RED_BOLD + "Bye bye");
+                    System.exit(0);
+                    break;
                 default:
                     System.out.println(ConsoleColors.RED_BOLD + "Can't understand you. Try again.");
                     input = scanner.nextLine();
 
-            }
-
-
-            if (input.equals("exit")) {
-                try {
-                    writeFromTaskTabToFile(taskTabFromFile);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(ConsoleColors.CYAN_BOLD + "All changes saved");
-                System.out.println(ConsoleColors.RED_BOLD + "Bye bye");
-                break;
             }
         }
     }
@@ -139,7 +137,14 @@ public class TaskManager {
         newTask.append(data).append(",");
 
         System.out.println(ConsoleColors.GREEN_BOLD + "Is your task important? (true or false): ");
-        newTask.append(scanner.nextLine());
+        String importance = scanner.nextLine();
+        while (!importance.equals("true") && !importance.equals("false")) {
+            System.out.println("True or false?");
+            importance = scanner.nextLine();
+        }
+        newTask.append(importance);
+
+
         System.out.println(ConsoleColors.CYAN_BOLD + "Your task added. \n It looks like: " + newTask);
 
         taskTabFromFile = Arrays.copyOf(taskTabFromFile, taskTabFromFile.length + 1);
